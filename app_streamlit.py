@@ -8,7 +8,7 @@ OUT = os.environ.get("OUT_DIR", "output")
 st.set_page_config(page_title="Car Insurance Claim Dashboard", page_icon="", layout="wide")
 
 # ==========================================
-# UI/UX: ENTERPRISE SAAS DASHBOARD
+# UI/UX: ENTERPRISE CLEAN (TAB VERSION)
 # ==========================================
 st.markdown("""
     <style>
@@ -23,74 +23,54 @@ st.markdown("""
     
     /* 3. SEMBUNYIIN BAWAAN STREAMLIT */
     #MainMenu, footer, header, [data-testid="stToolbar"], .stDeployButton {display: none !important;}
-    .block-container { padding-top: 1.5rem !important; padding-bottom: 2rem !important; max-width: 95% !important; }
+    .block-container { padding-top: 2rem !important; max-width: 95% !important; }
 
-    /* 4. SIDEBAR STYLING (Khas Dashboard Enterprise) */
-    [data-testid="stSidebar"] {
-        background-color: #FFFFFF !important;
-        border-right: 1px solid #E2E8F0 !important;
-        padding-top: 2rem !important;
-    }
-    [data-testid="stSidebar"] .stRadio > label {
-        font-weight: 600 !important;
-        color: #0F172A !important;
-        font-size: 1rem !important;
-        margin-bottom: 1rem;
-    }
-    /* Bikin tombol radio jadi menu list ala web app */
-    [data-testid="stSidebar"] .stRadio [role="radiogroup"] > label {
-        padding: 10px 15px !important;
-        border-radius: 8px !important;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        color: #475569 !important;
-        font-weight: 500 !important;
-    }
-    [data-testid="stSidebar"] .stRadio [role="radiogroup"] > label:hover {
-        background-color: #F1F5F9 !important;
-        color: #0F172A !important;
-    }
-    /* Warna saat radio dipilih */
-    [data-testid="stSidebar"] .stRadio [aria-checked="true"] {
-        background-color: #EFF6FF !important;
-        color: #2563EB !important;
-        font-weight: 600 !important;
-    }
-    /* Sembunyiin lingkaran radio bawaan */
-    [data-testid="stSidebar"] .stRadio [role="radiogroup"] > label > div:first-child {
-        display: none !important;
-    }
+    /* 4. TIPOGRAFI HEADER */
+    h1 { font-weight: 700 !important; color: #0F172A !important; font-size: 2rem !important; margin-bottom: 0px; }
+    .stCaption { color: #64748B !important; font-size: 1rem !important; margin-bottom: 2rem; }
 
-    /* 5. TIPOGRAFI HEADER */
-    h1 { font-weight: 700 !important; color: #0F172A !important; font-size: 1.8rem !important; margin-bottom: 0px;}
-    .stCaption { color: #64748B !important; font-size: 0.95rem !important; margin-bottom: 2rem;}
-    
-    /* 6. METRIC CARDS (Interaktif & Premium) */
+    /* 5. METRIC CARDS (Interaktif & Premium) */
     [data-testid="stMetric"] {
         background-color: #FFFFFF !important;
         border: 1px solid #E2E8F0 !important;
-        border-left: 4px solid #CBD5E1 !important; /* Garis kiri abu-abu default */
+        border-left: 4px solid #CBD5E1 !important;
         border-radius: 8px !important;
         padding: 20px !important;
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important; 
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        cursor: default;
     }
     /* EFEK HOVER INTERAKTIF */
     [data-testid="stMetric"]:hover {
-        transform: translateY(-4px) !important; /* Naik */
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important; /* Bayangan tebal */
-        border-left: 4px solid #2563EB !important; /* Garis kiri jadi Biru Corporate */
+        transform: translateY(-4px) !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+        border-left: 4px solid #2563EB !important;
     }
     
     [data-testid="stMetricValue"] { font-size: 1.8rem !important; color: #0F172A !important; font-weight: 700 !important; }
     [data-testid="stMetricLabel"] { font-size: 0.85rem !important; color: #64748B !important; font-weight: 600 !important; text-transform: uppercase; letter-spacing: 0.5px;}
 
-    /* 7. INFO BOX (Clean) */
+    /* 6. TAB MENU INTERAKTIF (Tanpa Emoji) */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 24px;
+        border-bottom: 1px solid #E2E8F0;
+    }
+    .stTabs [data-baseweb="tab"] {
+        padding: 10px 0px !important;
+        font-weight: 600 !important;
+        color: #64748B !important;
+        background-color: transparent !important;
+        transition: color 0.2s ease;
+    }
+    .stTabs [data-baseweb="tab"]:hover {
+        color: #2563EB !important;
+    }
+    .stTabs [aria-selected="true"] {
+        color: #2563EB !important;
+        border-bottom: 3px solid #2563EB !important;
+    }
+
+    /* 7. INFO BOX */
     .stAlert { border-radius: 8px !important; border: 1px solid #E2E8F0 !important; background-color: #F8FAFC !important; color: #334155 !important; }
-    
-    /* 8. DATAFRAME STYLING */
-    [data-testid="stDataFrame"] { border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden; }
     
     hr { border-color: #E2E8F0 !important; margin: 1.5rem 0 !important; }
     </style>
@@ -132,29 +112,17 @@ S = D["summary"]
 M = D["metrics"]
 
 # ==========================================
-# SIDEBAR NAVIGATION
-# ==========================================
-with st.sidebar:
-    st.markdown("### Claim Analytics")
-    st.markdown("<hr style='margin: 10px 0;'>", unsafe_allow_html=True)
-    menu = st.radio("Navigation", [
-        "Ringkasan Data", 
-        "Eksplorasi (EDA)", 
-        "Perbandingan Model", 
-        "Data & Basis Data"
-    ], label_visibility="collapsed")
-    
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
-    st.caption("© 2024 Data Science Team")
-
-# ==========================================
-# MAIN CONTENT AREA
+# HEADER & TABS
 # ==========================================
 st.title("Car Insurance Claim Prediction")
 st.caption("Logistic Regression vs Random Forest using PySpark — Kaggle Dataset")
+st.write("") 
 
-# ---------------- Menu 1: RINGKASAN
-if menu == "Ringkasan Data":
+# TABS (Tanpa Emoji, Bersih)
+tab1, tab2, tab3, tab4 = st.tabs(["Ringkasan Data", "Eksplorasi (EDA)", "Perbandingan Model", "Data & Basis Data"])
+
+# ---------------- Tab 1: RINGKASAN
+with tab1:
     c1, c2, c3, c4 = st.columns(4)
     claim = S["target"]["1"]
     c1.metric("Total Data", f"{S['n_rows']:,}")
@@ -162,6 +130,7 @@ if menu == "Ringkasan Data":
     c3.metric("Tingkat Klaim", f"{claim / S['n_rows'] * 100:.1f}%")
     c4.metric("Model Terbaik (ROC-AUC)", S["best_model"])
 
+    st.write("")
     st.markdown("---")
 
     l, r = st.columns([1, 1.5])
@@ -186,8 +155,8 @@ if menu == "Ringkasan Data":
 
     st.info(f"Data Cleaning Info: Duplikat baris: {S['n_dup']} | Data Train: {S['train_n']:,} | Data Test: {S['test_n']:,}")
 
-# ---------------- Menu 2: EDA
-elif menu == "Eksplorasi (EDA)":
+# ---------------- Tab 2: EDA
+with tab2:
     eda = D["eda"]
     var = st.selectbox("Pilih variabel kategorikal", eda["variabel"].unique(), index=0)
     sub = eda[eda["variabel"] == var]
@@ -220,8 +189,8 @@ elif menu == "Eksplorasi (EDA)":
     fig_corr = pro_chart_style(fig_corr, height=500)
     st.plotly_chart(fig_corr, use_container_width=True, config=PLOTLY_CONFIG)
 
-# ---------------- Menu 3: MODEL
-elif menu == "Perbandingan Model":
+# ---------------- Tab 3: MODEL
+with tab3:
     st.subheader("Evaluasi Performa Model")
     show = M[["model", "accuracy", "precision", "recall", "f1", "roc_auc"]].copy()
     st.dataframe(show.style.format({c: "{:.4f}" for c in show.columns[1:]}).highlight_max(
@@ -267,8 +236,8 @@ elif menu == "Perbandingan Model":
     st.plotly_chart(fig_fi, use_container_width=True, config=PLOTLY_CONFIG)
     st.caption(f"Hyperparameter terbaik (3-fold CV) — LR: {S['lr_params']} • RF: {S['rf_params']}")
 
-# ---------------- Menu 4: DATA
-elif menu == "Data & Basis Data":
+# ---------------- Tab 4: DATA
+with tab4:
     st.subheader("Dataset Hasil Olahan")
     st.dataframe(D["clean"].head(200), use_container_width=True)
     st.download_button("Unduh dataset olahan (CSV)", D["clean"].to_csv(index=False).encode(),
