@@ -1,0 +1,21 @@
+{
+  "n_rows": 10000,
+  "n_cols": 19,
+  "n_dup": 0,
+  "n_dup_id": 0,
+  "target": {
+    "0": 6867,
+    "1": 3133
+  },
+  "best_model": "Logistic Regression",
+  "lr_params": {
+    "regParam": 0.0,
+    "elasticNetParam": 0.0
+  },
+  "rf_params": {
+    "numTrees": 100,
+    "maxDepth": 8
+  },
+  "train_n": 8079,
+  "test_n": 1921
+}
