@@ -8,14 +8,14 @@ OUT = os.environ.get("OUT_DIR", "output")
 st.set_page_config(page_title="Car Insurance Claim Dashboard", page_icon="", layout="wide")
 
 # ==========================================
-# UI/UX: ENTERPRISE CLEAN (TAB VERSION)
+# UI/UX: ENTERPRISE CLEAN DASHBOARD
 # ==========================================
 st.markdown("""
     <style>
     /* 1. FONT PROFESIONAL */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
-    /* 2. BACKGROUND BERSIH (Off-white) */
+    /* 2. BACKGROUND BERSIH */
     .stApp {
         background-color: #F8FAFC !important; 
         font-family: 'Inter', sans-serif !important;
@@ -23,13 +23,60 @@ st.markdown("""
     
     /* 3. SEMBUNYIIN BAWAAN STREAMLIT */
     #MainMenu, footer, header, [data-testid="stToolbar"], .stDeployButton {display: none !important;}
-    .block-container { padding-top: 2rem !important; max-width: 95% !important; }
+    .block-container { padding-top: 1.5rem !important; max-width: 95% !important; }
 
-    /* 4. TIPOGRAFI HEADER */
-    h1 { font-weight: 700 !important; color: #0F172A !important; font-size: 2rem !important; margin-bottom: 0px; }
-    .stCaption { color: #64748B !important; font-size: 1rem !important; margin-bottom: 2rem; }
+    /* 4. HERO BANNER (Hiasan di atas) */
+    .hero-banner {
+        background-color: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 12px;
+        padding: 24px 32px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    }
+    .hero-logo {
+        background-color: #2563EB;
+        color: #FFFFFF;
+        font-weight: 800;
+        font-size: 24px;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        letter-spacing: -1px;
+    }
+    .hero-text h1 {
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 1.6rem !important;
+        color: #0F172A !important;
+        font-weight: 700 !important;
+    }
+    .hero-text p {
+        margin: 0 !important;
+        padding: 0 !important;
+        color: #64748B !important;
+        font-size: 0.95rem !important;
+        font-weight: 500 !important;
+    }
+    .hero-badge {
+        margin-left: auto;
+        background-color: #EFF6FF;
+        color: #2563EB;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
 
-    /* 5. METRIC CARDS (Interaktif & Premium) */
+    /* 5. METRIC CARDS (Interaktif) */
     [data-testid="stMetric"] {
         background-color: #FFFFFF !important;
         border: 1px solid #E2E8F0 !important;
@@ -39,44 +86,27 @@ st.markdown("""
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important; 
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
-    /* EFEK HOVER INTERAKTIF */
     [data-testid="stMetric"]:hover {
         transform: translateY(-4px) !important;
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
         border-left: 4px solid #2563EB !important;
     }
-    
     [data-testid="stMetricValue"] { font-size: 1.8rem !important; color: #0F172A !important; font-weight: 700 !important; }
     [data-testid="stMetricLabel"] { font-size: 0.85rem !important; color: #64748B !important; font-weight: 600 !important; text-transform: uppercase; letter-spacing: 0.5px;}
 
-    /* 6. TAB MENU INTERAKTIF (Tanpa Emoji) */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 24px;
-        border-bottom: 1px solid #E2E8F0;
-    }
-    .stTabs [data-baseweb="tab"] {
-        padding: 10px 0px !important;
-        font-weight: 600 !important;
-        color: #64748B !important;
-        background-color: transparent !important;
-        transition: color 0.2s ease;
-    }
-    .stTabs [data-baseweb="tab"]:hover {
-        color: #2563EB !important;
-    }
-    .stTabs [aria-selected="true"] {
-        color: #2563EB !important;
-        border-bottom: 3px solid #2563EB !important;
-    }
+    /* 6. TAB MENU */
+    .stTabs [data-baseweb="tab-list"] { gap: 24px; border-bottom: 1px solid #E2E8F0; }
+    .stTabs [data-baseweb="tab"] { padding: 10px 0px !important; font-weight: 600 !important; color: #64748B !important; background-color: transparent !important; transition: color 0.2s ease; }
+    .stTabs [data-baseweb="tab"]:hover { color: #2563EB !important; }
+    .stTabs [aria-selected="true"] { color: #2563EB !important; border-bottom: 3px solid #2563EB !important; }
 
-    /* 7. INFO BOX */
+    /* 7. INFO BOX & LAINNYA */
     .stAlert { border-radius: 8px !important; border: 1px solid #E2E8F0 !important; background-color: #F8FAFC !important; color: #334155 !important; }
-    
     hr { border-color: #E2E8F0 !important; margin: 1.5rem 0 !important; }
     </style>
 """, unsafe_allow_html=True)
 
-# Fungsi grafik Plotly
+# Fungsi standar grafik profesional
 def pro_chart_style(fig, height=400):
     fig.update_layout(
         height=height,
@@ -112,13 +142,20 @@ S = D["summary"]
 M = D["metrics"]
 
 # ==========================================
-# HEADER & TABS
+# HEADER & HERO SECTION
 # ==========================================
-st.title("Car Insurance Claim Prediction")
-st.caption("Logistic Regression vs Random Forest using PySpark — Kaggle Dataset")
-st.write("") 
+st.markdown("""
+<div class="hero-banner">
+    <div class="hero-logo">CI</div>
+    <div class="hero-text">
+        <h1>Car Insurance Claim Prediction</h1>
+        <p>Logistic Regression vs Random Forest using PySpark — Kaggle Dataset</p>
+    </div>
+    <div class="hero-badge">Enterprise Dashboard</div>
+</div>
+""", unsafe_allow_html=True)
 
-# TABS (Tanpa Emoji, Bersih)
+# TABS
 tab1, tab2, tab3, tab4 = st.tabs(["Ringkasan Data", "Eksplorasi (EDA)", "Perbandingan Model", "Data & Basis Data"])
 
 # ---------------- Tab 1: RINGKASAN
