@@ -1,6 +1,0 @@
-[theme]
-primaryColor = "#FF4B4B" # Warna merah klaim
-backgroundColor = "#F8F9FA" # Putih agak abu (lebih soft)
-secondaryBackgroundColor = "#E9ECEF" # Untuk card/sidebar
-textColor = "#212529" # Hitam soft, bukan hitam pekat
-font = "sans serif"
