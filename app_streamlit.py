@@ -8,81 +8,114 @@ OUT = os.environ.get("OUT_DIR", "output")
 st.set_page_config(page_title="Prediksi Klaim Asuransi Kendaraan", page_icon="🚗", layout="wide")
 
 # ==========================================
-# UI/UX MAKER: CUSTOM CSS & GRADIENT
+# UI/UX LEVEL DEWA: GLASSMORPHISM & MESH GRADIENT
 # ==========================================
 st.markdown("""
     <style>
-    /* 1. Import Font Modern (Inter / Poppins) */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    /* 1. IMPORT FONT (Plus Jakarta Sans & Space Grotesk buat Angka) */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap');
     
-    /* 2. Background Gradasi Soft (Gak Flat Lagi) */
+    /* 2. BACKGROUND MESH GRADIENT (Gak Flat!) */
     .stApp {
-        background: linear-gradient(135deg, #F8F9FA 0%, #E2E8F0 100%) !important;
-        font-family: 'Inter', sans-serif !important;
+        background-color: #F4F7FB !important;
+        background-image: 
+            radial-gradient(at 0% 0%, hsla(210,100%,93%,1) 0, transparent 50%), 
+            radial-gradient(at 50% 0%, hsla(0,100%,93%,1) 0, transparent 50%), 
+            radial-gradient(at 100% 0%, hsla(240,100%,93%,1) 0, transparent 50%) !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* 3. Sembunyiin elemen bawaan Streamlit yang bikin murah */
+    /* 3. Sembunyiin elemen bawaan Streamlit */
     #MainMenu, footer, header, [data-testid="stToolbar"], .stDeployButton {display: none !important;}
+    .block-container { padding-top: 2rem !important; max-width: 1200px !important; }
 
-    /* 4. Perbaiki Tipografi Judul */
+    /* 4. Tipografi */
     h1 {
         font-weight: 700 !important;
         color: #0F172A !important;
-        letter-spacing: -0.5px;
+        letter-spacing: -0.05rem;
+        font-size: 2.5rem !important;
     }
     .stCaption {
-        color: #64748B !important;
+        color: #475569 !important;
         font-size: 1.05rem !important;
     }
 
-    /* 5. CARD METRIK (Proporsional & Ada Efek Hover) */
+    /* 5. GLASSMORPHISM CARD UNTUK METRIK */
     [data-testid="stMetric"] {
-        background-color: #FFFFFF !important;
-        padding: 15px 20px !important;
-        border-radius: 12px !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-        border-top: 4px solid #FF4B4B !important; /* Aksen garis atas merah */
+        background: rgba(255, 255, 255, 0.7) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.5) !important;
+        border-radius: 16px !important;
+        padding: 20px !important;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07) !important;
         transition: all 0.3s ease !important;
     }
     [data-testid="stMetric"]:hover {
-        transform: translateY(-4px) !important;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+        transform: translateY(-5px) !important;
+        box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15) !important;
     }
     
-    /* Atur ukuran font biar GAK KEGEDEAN */
+    /* Font Angka (Techy Look) */
     [data-testid="stMetricValue"] {
-        font-size: 1.8rem !important; /* Ukuran angka */
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-size: 2rem !important; 
         color: #0F172A !important;
         font-weight: 700 !important;
     }
     [data-testid="stMetricLabel"] {
-        font-size: 0.9rem !important; /* Ukuran label */
+        font-size: 0.9rem !important;
         color: #64748B !important;
-        font-weight: 500 !important;
+        font-weight: 600 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
     }
 
-    /* 6. Rapihin Tab */
-    .stTabs [data-baseweb="tab-list"] { gap: 20px; }
-    .stTabs [data-baseweb="tab"] { font-size: 1rem !important; font-weight: 600 !important; }
+    /* 6. Glassmorphism untuk Tab Menu */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.4);
+        padding: 8px;
+        border-radius: 12px;
+        backdrop-filter: blur(5px);
+    }
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 8px !important;
+        padding: 10px 20px !important;
+        font-weight: 600 !important;
+        color: #475569 !important;
+        transition: all 0.2s;
+    }
+    .stTabs [aria-selected="true"] {
+        background: #FFFFFF !important;
+        color: #FF4B4B !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+    }
     
     /* 7. Info Box */
-    .stAlert { border-radius: 10px !important; background-color: #EFF6FF !important; color: #1E40AF !important; }
+    .stAlert { 
+        border-radius: 12px !important; 
+        border: 1px solid #BFDBFE !important;
+        background: rgba(239, 246, 255, 0.8) !important; 
+        color: #1E40AF !important; 
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# Fungsi sakti biar grafiknya transparan, rapi, dan elegan
+# Fungsi sakti biar grafiknya transparan & rapi
 def premium_chart_style(fig, height=400):
     fig.update_layout(
-        height=height, # Kunci tinggi grafik biar gak kegedean
+        height=height,
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         margin=dict(t=50, b=30, l=20, r=20),
-        title_font=dict(size=16, color="#0F172A", family="Inter"),
-        font=dict(family="Inter, sans-serif", color="#475569"),
+        title_font=dict(size=16, color="#0F172A", family="Plus Jakarta Sans"),
+        font=dict(family="Plus Jakarta Sans, sans-serif", color="#475569"),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
     )
-    fig.update_xaxes(showgrid=False, linecolor='#E2E8F0')
-    fig.update_yaxes(showgrid=True, gridcolor='#E2E8F0', linecolor='rgba(0,0,0,0)')
+    fig.update_xaxes(showgrid=False, linecolor='rgba(200,200,200,0.2)')
+    fig.update_yaxes(showgrid=True, gridcolor='rgba(200,200,200,0.2)', linecolor='rgba(0,0,0,0)')
     return fig
 
 PLOTLY_CONFIG = {'displayModeBar': False}
@@ -106,7 +139,7 @@ S = D["summary"]
 M = D["metrics"]
 
 # HEADER
-st.title("🚗 Klaim Asuransi: Logistic Regression vs Random Forest")
+st.title("🚗 Klaim Asuransi: LR vs RF")
 st.caption("Analisis Prediktif menggunakan PySpark • Dataset: Car Insurance Claim (Kaggle)")
 st.write("") 
 
@@ -119,27 +152,26 @@ with tab1:
     c1.metric("Jumlah Data", f"{S['n_rows']:,}")
     c2.metric("Jumlah Variabel", S["n_cols"])
     c3.metric("Tingkat Klaim", f"{claim / S['n_rows'] * 100:.1f}%")
-    c4.metric("Model Terbaik (ROC-AUC)", S["best_model"])
+    c4.metric("Model Terbaik", S["best_model"])
 
     st.write("---")
 
-    # Proporsi Kiri 40%, Kanan 60%
     l, r = st.columns([1, 1.5])
     
     tdf = pd.DataFrame({"Status": ["Tidak klaim", "Klaim"], "Jumlah": [S["target"]["0"], S["target"]["1"]]})
     fig_pie = px.pie(tdf, names="Status", values="Jumlah", hole=0.65, 
                      title="Distribusi Target (OUTCOME)",
-                     color_discrete_sequence=["#94a3b8", "#ef4444"])
-    fig_pie.update_traces(textposition='inside', textinfo='percent', marker=dict(line=dict(color='#F8F9FA', width=2)))
+                     color_discrete_sequence=["#CBD5E1", "#FF4B4B"])
+    fig_pie.update_traces(textposition='inside', textinfo='percent', marker=dict(line=dict(color='#F4F7FB', width=3)))
     fig_pie = premium_chart_style(fig_pie, height=380)
-    fig_pie.update_layout(showlegend=False) # Legend dihapus biar bersih
+    fig_pie.update_layout(showlegend=False)
     l.plotly_chart(fig_pie, use_container_width=True, config=PLOTLY_CONFIG)
 
     miss = D["missing"][D["missing"]["missing"] > 0].reset_index().rename(columns={"index": "variabel"})
     fig_bar = px.bar(miss, x="variabel", y="pct", text="pct", 
                      title="Persentase Missing Value (%)",
                      color_discrete_sequence=["#F59E0B"])
-    fig_bar.update_traces(texttemplate='%{text:.2f}%', textposition='outside', width=0.4)
+    fig_bar.update_traces(texttemplate='%{text:.2f}%', textposition='outside', width=0.4, marker=dict(cornerradius=8))
     fig_bar = premium_chart_style(fig_bar, height=380)
     fig_bar.update_layout(yaxis_title="", xaxis_title="")
     r.plotly_chart(fig_bar, use_container_width=True, config=PLOTLY_CONFIG)
@@ -155,12 +187,13 @@ with tab2:
     
     fig_eda1 = px.bar(sub, x="kategori", y="jumlah", title=f"Jumlah Pemegang Polis per {var}",
                       color_discrete_sequence=["#3B82F6"])
+    fig_eda1.update_traces(marker=dict(cornerradius=6))
     fig_eda1 = premium_chart_style(fig_eda1, height=350)
     a.plotly_chart(fig_eda1, use_container_width=True, config=PLOTLY_CONFIG)
     
     fig_eda2 = px.bar(sub, x="kategori", y="claim_rate", text="claim_rate",
-                      title=f"Tingkat Klaim (%) per {var}", color_discrete_sequence=["#EF4444"])
-    fig_eda2.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
+                      title=f"Tingkat Klaim (%) per {var}", color_discrete_sequence=["#FF4B4B"])
+    fig_eda2.update_traces(texttemplate='%{text:.1f}%', textposition='outside', marker=dict(cornerradius=6))
     fig_eda2 = premium_chart_style(fig_eda2, height=350)
     b.plotly_chart(fig_eda2, use_container_width=True, config=PLOTLY_CONFIG)
 
@@ -171,7 +204,7 @@ with tab2:
     
     fig_hist = px.histogram(cl2, x=num, color="Status", barmode="overlay", opacity=0.8,
                             title=f"Distribusi {num} berdasarkan status klaim",
-                            color_discrete_map={"Tidak klaim": "#94a3b8", "Klaim": "#ef4444"})
+                            color_discrete_map={"Tidak klaim": "#CBD5E1", "Klaim": "#FF4B4B"})
     fig_hist = premium_chart_style(fig_hist, height=400)
     st.plotly_chart(fig_hist, use_container_width=True, config=PLOTLY_CONFIG)
     
@@ -191,6 +224,7 @@ with tab3:
     fig_metric = px.bar(long, x="metrik", y="nilai", color="model", barmode="group", text_auto=".3f",
                         title="Perbandingan Metrik Evaluasi", range_y=[0, 1.15],
                         color_discrete_sequence=["#3B82F6", "#10B981"])
+    fig_metric.update_traces(marker=dict(cornerradius=6))
     fig_metric = premium_chart_style(fig_metric, height=400)
     st.plotly_chart(fig_metric, use_container_width=True, config=PLOTLY_CONFIG)
 
@@ -212,7 +246,7 @@ with tab3:
                       columns=["Prediksi: Tidak", "Prediksi: Klaim"])
     fig_cm = px.imshow(cm, text_auto=True, color_continuous_scale="Blues", title=f"Confusion Matrix – {mdl}")
     fig_cm = premium_chart_style(fig_cm, height=400)
-    fig_cm.update_layout(coloraxis_showscale=False) # Sembunyiin colorbar
+    fig_cm.update_layout(coloraxis_showscale=False)
     b.plotly_chart(fig_cm, use_container_width=True, config=PLOTLY_CONFIG)
 
     st.write("---")
@@ -223,6 +257,7 @@ with tab3:
     
     fig_fi = px.bar(f, x="nilai", y="fitur", orientation="h", title=f"Top 10 Fitur – {fm}",
                     labels={"nilai": lab}, color_discrete_sequence=["#8B5CF6"])
+    fig_fi.update_traces(marker=dict(cornerradius=6))
     fig_fi = premium_chart_style(fig_fi, height=400)
     st.plotly_chart(fig_fi, use_container_width=True, config=PLOTLY_CONFIG)
     st.caption(f"Hyperparameter terbaik (3-fold CV) → LR: {S['lr_params']} • RF: {S['rf_params']}")
